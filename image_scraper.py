@@ -8,12 +8,13 @@ from PIL import Image
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
+import os
 
-import re
 # Assuming options is an instance of ChromeOptions
 options = webdriver.ChromeOptions()
 
 # ... add any other options you need ...
+options.add_argument("--headless")
 options.add_argument("--incognito")
 chrome_service = webdriver.chrome.service.Service(
     ChromeDriverManager().install())
@@ -42,6 +43,8 @@ def download_image(download_path, url, file_name):
 
 
 def scraper(page_no, keywords):
+    os.mkdir(
+        f"C:\\Users\\Vedant\\Desktop\\Ip_Internship\\test-images\\{keywords}")
     url = f"https://www.freeimages.com/search/{keywords}/{page_no}"
     driver = webdriver.Chrome(options=options)
     driver.get(url)
@@ -51,7 +54,7 @@ def scraper(page_no, keywords):
     c = 1
     for pic in pictures:
         image_url = pic.get_attribute("src")
-        download_image(r"C:\Users\Vedant\Desktop\Ip_Internship\test-images",
+        download_image(f'''C:\\Users\\Vedant\\Desktop\\Ip_Internship\\test-images\\{keywords}\\''',
                        image_url, f"{keywords}_{page_no}_{c}.jpeg")
         c += 1
 
